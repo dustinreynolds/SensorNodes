@@ -9,7 +9,6 @@
 #include "uart.h"
 #include "button.h"
 
-
 int main(void)
 {
 	init_RCC_Configuration();
@@ -19,6 +18,7 @@ int main(void)
 	uart_Configuration(UART_POLLING);
 
 	button_init();
+
 	uart_OutString("Welcome to Nucleo L152RE\r\n");
 
 	while(1){
@@ -44,13 +44,6 @@ int main(void)
 				while(USART_GetFlagStatus(USART2, USART_FLAG_TXE) == RESET); // Wait for Empty
 
 				USART_SendData(USART2, Data); // Echo Char
-			}
-
-			if(button_readUserButton1() == 0)
-			{
-				while(button_readUserButton1() == 0);
-
-				uart_OutString("Button Pressed!\r\n");
 			}
 		}
 	}
