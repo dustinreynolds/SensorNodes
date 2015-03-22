@@ -5,6 +5,8 @@
  *      Author: Dustin
  */
 #include "stm32l1xx.h"
+#include "button.h"
+#include "uart.h"
 
 /**
 * @brief This function handles EXTI15_10_IRQHandler Handler.
@@ -31,7 +33,7 @@ void button_NVIC_init(uint8_t enable){
 		/* Configure Button EXTI line */
 		EXTI_InitStructure.EXTI_Line = EXTI_Line13;
 		EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+		EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising; //trigger interrupt when button is released
 		EXTI_InitStructure.EXTI_LineCmd = ENABLE;
 		EXTI_Init(&EXTI_InitStructure);
 
@@ -58,7 +60,7 @@ void button_NVIC_init(uint8_t enable){
 	}
 }
 
-uint8_t button_init(){
+void button_init(void){
 	GPIO_InitTypeDef GPIO_InitStructure;
 	/* Connect USART pins to AF */
 	GPIO_PinAFConfig(GPIOA, GPIO_PinSource2, GPIO_AF_USART2);

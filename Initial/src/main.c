@@ -6,8 +6,10 @@
  */
 
 #include "stm32l1xx.h"
+#include "init.h"
 #include "uart.h"
 #include "button.h"
+#include "led.h"
 
 int main(void)
 {
@@ -19,6 +21,8 @@ int main(void)
 
 	button_init();
 
+	led_init();
+
 	uart_OutString("Welcome to Nucleo L152RE\r\n");
 
 	while(1){
@@ -26,14 +30,15 @@ int main(void)
 		uart_OutString("Switching to interrupt mode\r\n");
 
 		uart_switch_mode(UART_INTERRUPT_RX);
+		led_toggle();
 		uint32_t i = 0;
-		for (i = 0; i<80000000; i++);  //roughly 10 second delay
+		for (i = 0; i<8000000; i++);  //roughly 10 second delay
 
 		uart_OutString("Switching to polling mode\r\n");
 
 		uart_switch_mode(UART_POLLING);
-
-		for (i = 0; i < 8000000; i++){
+		led_toggle();
+		for (i = 0; i < 800000; i++){
 			uint16_t Data;
 
 			/*Only get a character if it is ready*/
@@ -46,5 +51,6 @@ int main(void)
 				USART_SendData(USART2, Data); // Echo Char
 			}
 		}
+
 	}
 }
